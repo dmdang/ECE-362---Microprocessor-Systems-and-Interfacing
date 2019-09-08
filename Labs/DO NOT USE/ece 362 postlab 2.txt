@@ -1,0 +1,45 @@
+.cpu cortex-m0
+.thumb
+.syntax unified
+.fpu softvfp
+
+.text
+.global main
+.global fibonacci
+
+main:
+    
+    movs r0, #7
+    bl fibonacci
+    wfi
+    
+fibonacci:
+    movs r1, r0
+fibonacci2:
+    push {r4, r5, r6, r7, lr}
+    cmp r0, #2
+    blt end
+    movs r4, r0
+    subs r0, #1
+    subs r5, r4, #2
+    bl fibonacci2
+    cmp r4, r1
+    beq righttree
+    
+righttreefin:
+    adds r0, r0, r5
+    b end
+    
+
+righttree:
+    cmp r5, #2
+    blt righttreefin
+    movs r7, r5
+    subs r5, #1
+    subs r6, r7, #2
+    bl righttree
+    
+
+
+end:
+    pop {r4, r5, r6, r7, pc}
